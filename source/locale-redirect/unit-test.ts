@@ -29,14 +29,14 @@ test("sends any address without a locale to the remembered locale, then the brow
 
 describe("which paths need a locale", () => {
   const needsLocale = new RegExp(`^/(?:${pathWithoutLocale(["en", "pt"])})$`);
-  test.each(["/licence", "/license", "/services/web", "/english", "/ptx", "/a.b/page"])("%s does", (path) => {
+  test.each(["/license", "/license", "/services/web", "/english", "/ptx", "/a.b/page"])("%s does", (path) => {
     expect(needsLocale.test(path)).toBe(true);
   });
   test.each([
     "/",
     "/en",
     "/pt",
-    "/en/licence",
+    "/en/license",
     "/pt/",
     "/_next/static/chunk.js",
     "/_vercel/insights",

@@ -7,14 +7,14 @@ import type { LocaleRedirect } from "@sharadox/internationalization-web-library/
  * `sitemap.xml` or `robots.txt`). A Next.js path pattern (lookaheads only, no capturing groups).
  *
  * @example
- * new RegExp(`^/(?:${pathWithoutLocale(["en", "pt"])})$`).test("/licence"); // true
+ * new RegExp(`^/(?:${pathWithoutLocale(["en", "pt"])})$`).test("/license"); // true
  */
 export function pathWithoutLocale(locales: readonly string[]): string {
   return `(?!(?:${locales.join("|")})(?:/|$))(?!(?:_next|_vercel|api)(?:/|$))(?!(?:icon|apple-icon)$)(?!.*\\.[a-zA-Z0-9]+$).+`;
 }
 
 /**
- * Redirects for next.config `redirects()`. Any address without a locale (`/`, `/licence`, `/services/web`) goes to
+ * Redirects for next.config `redirects()`. Any address without a locale (`/`, `/license`, `/services/web`) goes to
  * the same page in, in order: the locale the visitor picked before (the cookie set by `rememberLocale`), the locale
  * their browser asks for first (Accept-Language) when it is published, and otherwise the default locale. Pages that
  * still don't exist then get the site's localized 404. Temporary, so search engines keep every `/<locale>` address.

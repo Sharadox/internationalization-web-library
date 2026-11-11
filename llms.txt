@@ -1,0 +1,11 @@
+# @sharadox/internationalization-web-library
+
+> One locale configuration → every i18n helper for Next.js App Router sites with /[locale] routes.
+
+- `defineLocales({ locales: ["en","pt"], defaultLocale: "en", cookie?: "locale", languageTags?: { pt: "pt-PT" }, openGraphLocales? })` from `/locale` → { locales, defaultLocale, cookie, isLocale(value), languageTag(locale), openGraphLocale(locale), staticParams(), localePath(locale, path?), alternates(path?) }
+- `translate({ en, pt }, locale)` from `/translate`
+- `localeRedirects(LOCALES)` from `/locale-redirect` → next.config redirects for "/": cookie → Accept-Language → default (permanent: false)
+- `rememberLocale(locale, cookie?)` from `/locale-preference` (cookie, 1 year)
+- `<LocaleLink locale current cookie className>` from `/locale-link` ("use client", next/link, remembers choice)
+- Types: Translated<Locale>, LocaleOptions, Locales from `/locale/type`
+- Peer deps: next, react. Licence: Sharadox Open Source Licence 0.1.0

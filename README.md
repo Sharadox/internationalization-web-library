@@ -50,14 +50,14 @@ translate({ en: "Contact", pt: "Contacto" }, locale);
 
 ## API
 
-| Import                | Export                                                                                 | Description                                                                                                                |
-| --------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `…/locale`            | `defineLocales({ locales, defaultLocale, cookie?, languageTags?, openGraphLocales? })` | Returns `{ locales, defaultLocale, cookie, isLocale, languageTag, openGraphLocale, staticParams, localePath, alternates }` |
-| `…/locale/type`       | `Translated<Locale>`, `LocaleOptions`, `Locales`                                       | Types                                                                                                                      |
-| `…/translate`         | `translate(value, locale)`                                                             | Picks the copy for a locale                                                                                                |
-| `…/locale-redirect`   | `localeRedirects(locales)`                                                             | next.config redirects for `/`: cookie, then Accept-Language, then default (temporary)                                      |
-| `…/locale-preference` | `rememberLocale(locale, cookie?)`                                                      | Remembers a manual choice for a year                                                                                       |
-| `…/locale-link`       | `<LocaleLink locale current? href? cookie? …anchor>`                                   | Unstyled next/link that remembers the choice (`hrefLang`, `aria-current`)                                                  |
+| Import                | Export                                                                                 | Description                                                                                                                                                           |
+| --------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `…/locale`            | `defineLocales({ locales, defaultLocale, cookie?, languageTags?, openGraphLocales? })` | Returns `{ locales, defaultLocale, cookie, isLocale, languageTag, openGraphLocale, staticParams, localePath, alternates }`                                            |
+| `…/locale/type`       | `Translated<Locale>`, `LocaleOptions`, `Locales`                                       | Types                                                                                                                                                                 |
+| `…/translate`         | `translate(value, locale)`                                                             | Picks the copy for a locale                                                                                                                                           |
+| `…/locale-redirect`   | `localeRedirects(locales)`, `pathWithoutLocale(locales)`                               | next.config redirects for `/` and every path without a locale (files, `_next`, `api` and root icons excepted): cookie, then Accept-Language, then default (temporary) |
+| `…/locale-preference` | `rememberLocale(locale, cookie?)`                                                      | Remembers a manual choice for a year                                                                                                                                  |
+| `…/locale-link`       | `<LocaleLink locale current? href? cookie? …anchor>`                                   | Unstyled next/link that remembers the choice (`hrefLang`, `aria-current`)                                                                                             |
 
 `alternates(path)` returns hreflang links with `x-default`, ready for Next.js `metadata.alternates.languages`. `openGraphLocale` knows the usual regions (`en_GB`, `pt_PT`, `es_ES`…) and takes your own.
 

@@ -8,5 +8,5 @@
 - `rememberLocale(locale, cookie?)` from `/locale-preference` (cookie, 1 year)
 - `<LocaleLink locale current cookie className>` from `/locale-link` ("use client", next/link, remembers choice)
 - Types: Translated<Locale>, LocaleOptions, Locales from `/locale/type`
-- Peer deps: next, react. Licence: Sharadox Open Source Licence 0.1.0
+- Peer deps: next, react. License: Sharadox Open Source License 0.1.0
 - /locale-redirect localeRedirects(LOCALES) redirects "/" and every path without a locale (except _next, _vercel, api, icon, apple-icon and files with an extension) to the remembered → browser → default locale; pathWithoutLocale(locales) is the path pattern

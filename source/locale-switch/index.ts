@@ -43,7 +43,9 @@ function unname(element: Element): void {
   style.removeProperty("view-transition-class");
 }
 
-const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+// Timers, not animation frames: while a view transition waits for the new page, the browser pauses rendering and
+// animation frames never fire.
+const pause = (milliseconds: number) => new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
 
 /** Containers of the page's canvases: sized by CSS, so they make steady transition boxes. */
 const canvasBoxes = () =>
@@ -66,10 +68,10 @@ export async function switchLocale({ href, navigate, timeoutMilliseconds = 3000 
     navigate(href);
     const start = performance.now();
     while (document.documentElement.lang === previousLanguage && performance.now() - start < timeoutMilliseconds) {
-      await nextFrame();
+      await pause(16);
     }
-    await nextFrame();
-    await nextFrame();
+    // Let the new page finish committing (layout effects, styles) before it is shown.
+    await pause(32);
     scrollTo({ top: scroll, behavior: "instant" });
     markSoftNavigationDocument();
   };

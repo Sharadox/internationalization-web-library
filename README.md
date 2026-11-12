@@ -63,7 +63,7 @@ translate({ en: "Contact", pt: "Contacto" }, locale);
 | `…/locale-switch`           | `switchLocale({ href, navigate, timeoutMilliseconds? })`, `LOCALE_TEXT_CLASS`, `LOCALE_CANVAS_CLASS` | Switches language in place: keeps the reader on the same text (scroll anchored on it), raises web-library's soft-navigation signal (entrance effects skip), and with view transitions animates only the visible text that changes |
 | `…/locale-transition-style` | `<LocaleTransitionStyle css? />`, `LOCALE_TRANSITION_CSS`                                            | The default animation: changed text blurs out and in, canvases cross-fade, everything else holds still                                                                                                                            |
 
-`alternates(path)` returns hreflang links with `x-default`, ready for Next.js `metadata.alternates.languages`. `openGraphLocale` knows the usual regions (`en_GB`, `pt_PT`, `es_ES`…) and takes your own.
+`alternates(path)` returns hreflang links with `x-default`, ready for Next.js `metadata.alternates.languages`. `openGraphLocale` knows the usual regions (`en_US` for English, `pt_PT`, `es_ES`…) and takes your own.
 
 ## Develop
 

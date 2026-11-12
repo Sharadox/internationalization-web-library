@@ -29,7 +29,7 @@ describe("defineLocales", () => {
     expect(LOCALES.languageTag("pt")).toBe("pt-PT");
     expect(LOCALES.languageTag("en")).toBe("en");
     expect(LOCALES.openGraphLocale("pt")).toBe("pt_PT");
-    expect(LOCALES.openGraphLocale("en")).toBe("en_GB");
+    expect(LOCALES.openGraphLocale("en")).toBe("en_US");
     const custom = defineLocales({ locales: ["en", "xx"], defaultLocale: "en", openGraphLocales: { en: "en_US" } });
     expect(custom.openGraphLocale("en")).toBe("en_US");
     expect(custom.openGraphLocale("xx")).toBe("xx");

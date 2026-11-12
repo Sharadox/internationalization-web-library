@@ -11,7 +11,7 @@ export interface LocaleOptions<Locale extends string> {
   cookie?: string;
   /** `<html lang>` tag per locale when it isn't the locale itself, for example `{ pt: "pt-PT" }`. */
   languageTags?: Partial<Record<NoInfer<Locale>, string>>;
-  /** Open Graph locale per locale (`og:locale`), for example `{ pt: "pt_PT" }`; `en_GB`-style defaults otherwise. */
+  /** Open Graph locale per locale (`og:locale`), for example `{ pt: "pt_PT" }`; `en_US`-style defaults otherwise (American English for English). */
   openGraphLocales?: Partial<Record<NoInfer<Locale>, string>>;
 }
 

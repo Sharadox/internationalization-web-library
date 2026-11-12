@@ -3,7 +3,7 @@ import type { LocaleOptions, Locales } from "@sharadox/internationalization-web-
 
 /** Usual Open Graph locales for a language when the site doesn't name one. */
 const OPEN_GRAPH_DEFAULTS: Record<string, string> = {
-  en: "en_GB",
+  en: "en_US",
   pt: "pt_PT",
   es: "es_ES",
   fr: "fr_FR",

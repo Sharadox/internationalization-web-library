@@ -5,7 +5,7 @@ export interface LocaleLinkProperties extends Omit<AnchorHTMLAttributes<HTMLAnch
   locale: string;
   /** Where in that locale; the locale's home (`/<locale>`) by default. */
   href?: string;
-  /** Marks the link for the language being shown (`aria-current`). */
+  /** Marks the link for the language being shown (`aria-current`); clicking it then does nothing. */
   current?: boolean;
   /** Cookie that remembers the choice; `"locale"` by default. */
   cookie?: string;

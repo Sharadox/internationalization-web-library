@@ -28,10 +28,12 @@ export default { redirects: async () => localeRedirects(LOCALES) };
 // src/app/[locale]/layout.tsx
 export const generateStaticParams = () => LOCALES.staticParams();
 // <html lang={LOCALES.languageTag(locale)}>, and `if (!LOCALES.isLocale(locale)) notFound();`
+// In <head>: <LocaleTransitionStyle /> (how text animates when the language switches)
 ```
 
 ```tsx
-// A language switch: unstyled links that remember the choice
+// A language switch: unstyled links that remember the choice and switch in place (scroll kept, no entrance
+// replays, changed text animates to the new language)
 import { LocaleLink } from "@sharadox/internationalization-web-library/locale-link";
 
 {
@@ -50,14 +52,16 @@ translate({ en: "Contact", pt: "Contacto" }, locale);
 
 ## API
 
-| Import                | Export                                                                                 | Description                                                                                                                                                           |
-| --------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `…/locale`            | `defineLocales({ locales, defaultLocale, cookie?, languageTags?, openGraphLocales? })` | Returns `{ locales, defaultLocale, cookie, isLocale, languageTag, openGraphLocale, staticParams, localePath, alternates }`                                            |
-| `…/locale/type`       | `Translated<Locale>`, `LocaleOptions`, `Locales`                                       | Types                                                                                                                                                                 |
-| `…/translate`         | `translate(value, locale)`                                                             | Picks the copy for a locale                                                                                                                                           |
-| `…/locale-redirect`   | `localeRedirects(locales)`, `pathWithoutLocale(locales)`                               | next.config redirects for `/` and every path without a locale (files, `_next`, `api` and root icons excepted): cookie, then Accept-Language, then default (temporary) |
-| `…/locale-preference` | `rememberLocale(locale, cookie?)`                                                      | Remembers a manual choice for a year                                                                                                                                  |
-| `…/locale-link`       | `<LocaleLink locale current? href? cookie? …anchor>`                                   | Unstyled next/link that remembers the choice (`hrefLang`, `aria-current`)                                                                                             |
+| Import                      | Export                                                                                               | Description                                                                                                                                                                                       |
+| --------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `…/locale`                  | `defineLocales({ locales, defaultLocale, cookie?, languageTags?, openGraphLocales? })`               | Returns `{ locales, defaultLocale, cookie, isLocale, languageTag, openGraphLocale, staticParams, localePath, alternates }`                                                                        |
+| `…/locale/type`             | `Translated<Locale>`, `LocaleOptions`, `Locales`                                                     | Types                                                                                                                                                                                             |
+| `…/translate`               | `translate(value, locale)`                                                                           | Picks the copy for a locale                                                                                                                                                                       |
+| `…/locale-redirect`         | `localeRedirects(locales)`, `pathWithoutLocale(locales)`                                             | next.config redirects for `/` and every path without a locale (files, `_next`, `api` and root icons excepted): cookie, then Accept-Language, then default (temporary)                             |
+| `…/locale-preference`       | `rememberLocale(locale, cookie?)`                                                                    | Remembers a manual choice for a year                                                                                                                                                              |
+| `…/locale-link`             | `<LocaleLink locale current? href? cookie? …anchor>`                                                 | Unstyled next/link that remembers the choice and switches in place (`hrefLang`, `aria-current`; new-tab clicks stay normal links)                                                                 |
+| `…/locale-switch`           | `switchLocale({ href, navigate, timeoutMilliseconds? })`, `LOCALE_TEXT_CLASS`, `LOCALE_CANVAS_CLASS` | Switches language in place: keeps the scroll position, raises web-library's soft-navigation signal (entrance effects skip), and with view transitions animates only the visible text that changes |
+| `…/locale-transition-style` | `<LocaleTransitionStyle css? />`, `LOCALE_TRANSITION_CSS`                                            | The default animation: changed text blurs out and in, canvases cross-fade, everything else holds still                                                                                            |
 
 `alternates(path)` returns hreflang links with `x-default`, ready for Next.js `metadata.alternates.languages`. `openGraphLocale` knows the usual regions (`en_GB`, `pt_PT`, `es_ES`…) and takes your own.
 

@@ -1,4 +1,9 @@
-import { beginSoftNavigation, markSoftNavigationDocument } from "@sharadox/web-library/navigation/soft-navigation";
+import { isOnScreen } from "@sharadox/web-library/layout/on-screen";
+import {
+  beginSoftNavigation,
+  endSoftNavigationDocument,
+  markSoftNavigationDocument,
+} from "@sharadox/web-library/navigation/soft-navigation";
 import type { LocaleSwitchOptions } from "@sharadox/internationalization-web-library/locale-switch/type";
 
 /** View transition class of the text that changes language (styled by `LocaleTransitionStyle`). */
@@ -24,11 +29,26 @@ function textElements(): Element[] {
   return found;
 }
 
-function onScreen(element: Element): boolean {
-  const box = element.getBoundingClientRect();
-  return (
-    box.width > 0 && box.height > 0 && box.bottom > 0 && box.right > 0 && box.top < innerHeight && box.left < innerWidth
-  );
+/** How long skipped entrance animations would have run; the soft-navigation mark is cleared after it. */
+const ENTRANCE_MILLISECONDS = 4000;
+let clearMark: ReturnType<typeof setTimeout> | undefined;
+
+/** Whether the element is pinned to the screen (a fixed or sticky bar), which makes a poor scroll anchor. */
+function pinned(element: Element): boolean {
+  for (let current: Element | null = element; current && current !== document.body; current = current.parentElement) {
+    const position = getComputedStyle(current).position;
+    if (position === "fixed" || position === "sticky") return true;
+  }
+  return false;
+}
+
+/** The first piece of page text at the top of the screen, and where it sits, to keep the reader on it. */
+function scrollAnchor(elements: Element[]): { index: number; top: number } | null {
+  for (const [index, element] of elements.entries()) {
+    const box = element.getBoundingClientRect();
+    if (box.bottom > 0 && box.height > 0 && box.top < innerHeight && !pinned(element)) return { index, top: box.top };
+  }
+  return null;
 }
 
 function name(element: Element, transitionName: string, transitionClass: string): void {
@@ -52,7 +72,7 @@ const canvasBoxes = () =>
   [...document.querySelectorAll("canvas")].map((canvas) => canvas.parentElement).filter((box) => box !== null);
 
 /**
- * Switches the page to another language without the feel of a reload: the scroll position stays, components skip
+ * Switches the page to another language without the feel of a reload: the reader stays on the same text, components skip
  * their entrance effects (see `isSoftNavigation` in web-library), and, where the browser supports view transitions
  * and the visitor allows motion, each visible piece of text that changes fades and unblurs from the old wording to
  * the new one while everything else stays still. Resolves when the new language is shown.
@@ -63,6 +83,8 @@ const canvasBoxes = () =>
 export async function switchLocale({ href, navigate, timeoutMilliseconds = 3000 }: LocaleSwitchOptions): Promise<void> {
   const previousLanguage = document.documentElement.lang;
   const scroll = scrollY;
+  const elements = textElements();
+  const anchor = scrollAnchor(elements);
   beginSoftNavigation();
   const arrive = async () => {
     navigate(href);
@@ -72,8 +94,13 @@ export async function switchLocale({ href, navigate, timeoutMilliseconds = 3000 
     }
     // Let the new page finish committing (layout effects, styles) before it is shown.
     await pause(32);
-    scrollTo({ top: scroll, behavior: "instant" });
+    // Keep the reader on the same text: translations change sizes above it, so a plain scroll offset drifts.
+    const same = anchor ? textElements()[anchor.index] : undefined;
+    const top = same ? scrollY + same.getBoundingClientRect().top - anchor!.top : scroll;
+    scrollTo({ top, behavior: "instant" });
     markSoftNavigationDocument();
+    clearTimeout(clearMark);
+    clearMark = setTimeout(endSoftNavigationDocument, ENTRANCE_MILLISECONDS);
   };
   const animated =
     typeof document.startViewTransition === "function" &&
@@ -81,9 +108,9 @@ export async function switchLocale({ href, navigate, timeoutMilliseconds = 3000 
     !matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!animated) return arrive();
 
-  const before = textElements()
+  const before = elements
     .map((element, index) => ({ element, index }))
-    .filter(({ element }) => onScreen(element))
+    .filter(({ element }) => isOnScreen(element))
     .slice(0, TEXT_LIMIT);
   const was = new Map(
     before.map(({ element, index }) => [

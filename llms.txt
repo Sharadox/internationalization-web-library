@@ -12,3 +12,4 @@
 - /locale-redirect localeRedirects(LOCALES) redirects "/" and every path without a locale (except _next, _vercel, api, icon, apple-icon and files with an extension) to the remembered → browser → default locale; pathWithoutLocale(locales) is the path pattern
 - /locale-switch switchLocale({ href, navigate, timeoutMilliseconds=3000 }): in-place language switch (scroll kept, beginSoftNavigation, view transition on changed visible text, canvases cross-fade); LocaleLink uses it (router.push scroll:false)
 - /locale-transition-style <LocaleTransitionStyle css? /> in <head>: default animation (LOCALE_TRANSITION_CSS)
+- switchLocale (0.2.2) keeps the reader on the same text (anchors on the first non-fixed page text at the top of the screen) and clears the soft-navigation mark 4s later

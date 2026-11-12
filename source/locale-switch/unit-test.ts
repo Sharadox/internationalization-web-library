@@ -66,6 +66,41 @@ describe("switchLocale without view transitions", () => {
   });
 });
 
+describe("keeping the reader on the same text", () => {
+  test("anchors on the first page text at the top of the screen, never on a fixed bar", async () => {
+    document.body.innerHTML = `<header style="position:fixed"><a class="menu">Menu</a></header><h2 class="where">Process</h2>`;
+    let shift = 0;
+    vi.mocked(Element.prototype.getBoundingClientRect).mockImplementation(function (this: Element) {
+      return { ...box(true), top: this.classList.contains("where") ? 200 + shift : 0, bottom: 300 + shift };
+    });
+    const navigate = vi.fn(() => {
+      document.body.innerHTML = `<header style="position:fixed"><a class="menu">Menu</a></header><h2 class="where">Processo</h2>`;
+      document.documentElement.lang = "pt-PT";
+      shift = 90; // the translation above made the page taller
+    });
+    await switchLocale({ href: "/pt", navigate });
+    expect(scrollTo).toHaveBeenLastCalledWith({ top: 640 + 90, behavior: "instant" });
+  });
+
+  test("keeps the plain scroll position when no page text is on screen", async () => {
+    document.body.innerHTML = `<div class="empty"></div>`;
+    vi.mocked(Element.prototype.getBoundingClientRect).mockReturnValue(box(false));
+    await switchLocale({ href: "/pt", navigate: vi.fn(() => (document.documentElement.lang = "pt-PT")) });
+    expect(scrollTo).toHaveBeenLastCalledWith({ top: 640, behavior: "instant" });
+  });
+
+  test("clears the soft-navigation mark once skipped entrances would have finished", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    const done = switchLocale({ href: "/pt", navigate: navigateTo("Tecnologias", "pt-PT") });
+    await vi.advanceTimersByTimeAsync(100);
+    await done;
+    expect(document.documentElement.hasAttribute(SOFT_NAVIGATION_ATTRIBUTE)).toBe(true);
+    await vi.advanceTimersByTimeAsync(4000);
+    expect(document.documentElement.hasAttribute(SOFT_NAVIGATION_ATTRIBUTE)).toBe(false);
+    vi.useRealTimers();
+  });
+});
+
 describe("switchLocale with view transitions", () => {
   test("animates only the visible text that changes, and the canvases", async () => {
     vi.stubGlobal("CSS", { supports: () => true });

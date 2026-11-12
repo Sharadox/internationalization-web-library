@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sharadox/web-library':
-        specifier: ^0.6.0
-        version: 0.6.0
+        specifier: ^0.6.1
+        version: 0.6.1
     devDependencies:
       '@sharadox/es-lint-configuration-web-library':
         specifier: ^0.1.1
@@ -614,8 +614,8 @@ packages:
       '@vitest/coverage-v8': '>=5'
       vitest: '>=5'
 
-  '@sharadox/web-library@0.6.0':
-    resolution: {integrity: sha512-wDZ2AqpbDzihSkHsEPEhVYeJ9lgJW6PUNT8ehYVJEuer19qsdRZCU2Mmb9nx6MVgc0i2jRaC/LeeUywys3IvKw==}
+  '@sharadox/web-library@0.6.1':
+    resolution: {integrity: sha512-Kdst79Jngq340Qv0FpyCwaF4wvxduCJMqBKJ2qums09NPKJGWSnSTrM+yV/jNQmxx/lcOErZOuRGfzAqDn+SoQ==}
     engines: {node: '>=26'}
 
   '@shikijs/engine-oniguruma@3.23.0':
@@ -2126,7 +2126,7 @@ snapshots:
       - oxc-transform-react
       - vite
 
-  '@sharadox/web-library@0.6.0': {}
+  '@sharadox/web-library@0.6.1': {}
 
   '@shikijs/engine-oniguruma@3.23.0':
     dependencies:

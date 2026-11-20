@@ -26,6 +26,11 @@ export interface Locales<Locale extends string> {
   languageTag(locale: Locale): string;
   /** The Open Graph locale (`og:locale`). */
   openGraphLocale(locale: Locale): string;
+  /**
+   * An address's language and the rest of it: the first segment when it's a published locale (`/pt/services` is
+   * `pt` and `/services`), otherwise the default locale and `/` (for pages without route parameters, such as 404s).
+   */
+  splitPath(address: string): { locale: Locale; path: string };
   /** `[{ locale: "en" }, …]` for Next.js `generateStaticParams`. */
   staticParams(): { locale: Locale }[];
   /** The localized path of a page: `localePath("pt", "/contact")` → `/pt/contact`. */

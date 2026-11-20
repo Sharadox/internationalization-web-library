@@ -1,6 +1,6 @@
 {
   "name": "@sharadox/internationalization-web-library",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Languages for websites: one locale configuration, translations, language tags, hreflang alternates, remembered manual choices, locale redirects for Next.js and an unstyled locale link.",
   "private": false,
   "license": "SEE LICENSE IN LICENCA.md",
@@ -87,7 +87,7 @@
     "vitest": "^5.1.0"
   },
   "dependencies": {
-    "@sharadox/web-library": "^0.6.1"
+    "@sharadox/web-library": "^0.8.0"
   },
   "peerDependencies": {
     "next": ">=16",

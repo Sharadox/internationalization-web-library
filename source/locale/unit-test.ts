@@ -48,3 +48,12 @@ describe("defineLocales", () => {
     });
   });
 });
+
+test("splits an address into its language and the rest, falling back to the default", () => {
+  const sites = defineLocales({ locales: ["en", "pt"], defaultLocale: "en" });
+  expect(sites.splitPath("/pt/services")).toEqual({ locale: "pt", path: "/services" });
+  expect(sites.splitPath("/pt/portfolio/project")).toEqual({ locale: "pt", path: "/portfolio/project" });
+  expect(sites.splitPath("/pt")).toEqual({ locale: "pt", path: "/" });
+  expect(sites.splitPath("/missing/page")).toEqual({ locale: "en", path: "/" });
+  expect(sites.splitPath("")).toEqual({ locale: "en", path: "/" });
+});

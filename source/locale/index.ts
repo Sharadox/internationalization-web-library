@@ -36,6 +36,11 @@ export function defineLocales<const Locale extends string>(options: LocaleOption
     openGraphLocale: (locale) => openGraph[locale] ?? OPEN_GRAPH_DEFAULTS[locale] ?? locale,
     staticParams: () => locales.map((locale) => ({ locale })),
     localePath,
+    splitPath: (address) => {
+      const [, first = "", ...rest] = address.split("/");
+      if (!(locales as readonly string[]).includes(first)) return { locale: defaultLocale, path: "/" };
+      return { locale: first as Locale, path: rest.length ? `/${rest.join("/")}` : "/" };
+    },
     alternates: (path = "") => ({
       ...Object.fromEntries(locales.map((locale) => [locale, localePath(locale, path)])),
       "x-default": localePath(defaultLocale, path),
